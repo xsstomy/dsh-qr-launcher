@@ -14,35 +14,76 @@
 
 ## 安装
 
+`dsh plugin` 会把包加入 profile 的 `dependencies` 与 `dsh.profile.bundles`
+层栈，并应用本包 `dsh.bundle.patch` 声明的 `cordis.patch.yml`（插入
+`qr-launcher` Loader 行）。安装后重启 `dsh web` 即生效。
+
+### 方式一：npm registry（需要 npm 账号）
+
 发布到 npm 后：
 
 ```bash
 dsh plugin --profile web add dsh-qr-launcher
 ```
 
-本地开发/发布前验证（从插件目录的上层执行，`<path>` 换成插件真实路径）：
+### 方式二：本地路径安装（无需 npm 账号，推荐，本机当前采用）
+
+直接把插件源码目录作为依赖装进 profile，pnpm 走本地 `link:` 协议，**不经过
+npm registry**，也**不需要登录 npm**：
 
 ```bash
-dsh plugin --profile web add <path>/dsh-qr-launcher
+# 在插件目录的上级执行（或直接写绝对路径，均可）：
+dsh plugin --profile web add dsh-qr-launcher
+# 等价于：
+dsh plugin --profile web add /Users/xiashi/work/github/projects/dsh-qr-launcher
 ```
 
-验证安装（AC-01）：
+安装后验证（AC-01）：
 
 ```bash
 dsh plugin --profile web list   # 应出现 dsh-qr-launcher
 ```
 
-> `dsh plugin` 会把包加入 profile 的 `dependencies` 与 `dsh.profile.bundles`
-> 层栈，并应用本包 `dsh.bundle.patch` 声明的 `cordis.patch.yml`（插入
-> `qr-launcher` Loader 行）。安装后重启 `dsh web` 即生效。
+特点与注意事项：
 
-## 卸载
+- pnpm 以 `link:` 方式安装，`~/.dsh/profiles/web/node_modules/dsh-qr-launcher`
+  是指向插件仓库的**符号链接**：后续改插件源码**无需重新安装**，重启 `dsh web`
+  即生效（本包没有构建步骤，源码即产物）；
+- 因此**不要删除/移动插件仓库目录**，否则 profile 里的链接会失效；
+- 安装前建议先备份 profile（出问题可回滚）：
+
+  ```bash
+  cp ~/.dsh/profiles/web/{package.json,pnpm-lock.yaml,cordis.patch.yml} /tmp/dsh-web-profile-backup/ 2>/dev/null || \
+    mkdir -p /tmp/dsh-web-profile-backup && cp ~/.dsh/profiles/web/{package.json,pnpm-lock.yaml,cordis.patch.yml} /tmp/dsh-web-profile-backup/
+  ```
+
+### 方式三：tarball 离线安装（适合拷到别的机器 / 无网环境）
+
+```bash
+cd dsh-qr-launcher
+npm pack            # 生成 dsh-qr-launcher-<version>.tgz（约 26 kB，不含 devDependencies）
+# 把 tgz 拷到目标机器任意目录，然后在目标机器上：
+dsh plugin --profile web add /path/to/dsh-qr-launcher-0.1.0.tgz
+```
+
+> 目标机器同样需要安装 pnpm（`dsh plugin` 依赖它）与 dsh。
+
+## 卸载与回滚
 
 ```bash
 dsh plugin --profile web remove dsh-qr-launcher
 ```
 
 重启 `dsh web` 后，终端与设置页均不再显示二维码（AC-08）。
+
+若安装过程出了问题，可用备份还原：
+
+```bash
+cp /tmp/dsh-web-profile-backup/package.json ~/.dsh/profiles/web/
+cp /tmp/dsh-web-profile-backup/pnpm-lock.yaml ~/.dsh/profiles/web/
+cp /tmp/dsh-web-profile-backup/cordis.patch.yml ~/.dsh/profiles/web/
+cd ~/.dsh/profiles/web && pnpm install
+```
 
 ## 使用
 
