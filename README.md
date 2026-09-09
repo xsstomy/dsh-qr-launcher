@@ -34,15 +34,7 @@
 层栈，并应用本包 `dsh.bundle.patch` 声明的 `cordis.patch.yml`（插入
 `qr-launcher` Loader 行）。安装后重启 `dsh web` 即生效。
 
-### 方式一：npm registry（需要 npm 账号）
-
-发布到 npm 后：
-
-```bash
-dsh plugin --profile web add dsh-qr-launcher
-```
-
-### 方式二：本地路径安装（无需 npm 账号，推荐，本机当前采用）
+### 方式一：本地路径安装（无需 npm 账号，推荐，本机当前采用）
 
 直接把插件源码目录作为依赖装进 profile，pnpm 走本地 `link:` 协议，**不经过
 npm registry**，也**不需要登录 npm**：
@@ -73,7 +65,7 @@ dsh plugin --profile web list   # 应出现 dsh-qr-launcher
     mkdir -p /tmp/dsh-web-profile-backup && cp ~/.dsh/profiles/web/{package.json,pnpm-lock.yaml,cordis.patch.yml} /tmp/dsh-web-profile-backup/
   ```
 
-### 方式三：tarball 离线安装（适合拷到别的机器 / 无网环境）
+### 方式二：tarball 离线安装（适合拷到别的机器 / 无网环境）
 
 ```bash
 cd dsh-qr-launcher
