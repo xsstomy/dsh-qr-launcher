@@ -1,0 +1,11 @@
+# dsh-qr-launcher bundle patch — one Loader row over the Web layer.
+# Applied after the web-app bundle layer, before the user's own cordis.patch.yml.
+#
+# The row mounts this package's host module (lib/index.js). Its inject list
+# waits for the webserver (bind host/port, index tap) and the client-connection
+# service (process launch token for authenticated URLs) before application.
+
+- insert:
+    - id: qr-launcher
+      name: dsh-qr-launcher
+      inject: [webServer, connection]

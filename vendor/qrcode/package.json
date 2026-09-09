@@ -1,0 +1,7 @@
+{
+  "name": "dsh-qr-launcher-vendor-qrcode",
+  "private": true,
+  "version": "1.0.0",
+  "description": "CommonJS scope for the vendored QR Code generator (Kazuhiko Arase, MIT).",
+  "type": "commonjs"
+}

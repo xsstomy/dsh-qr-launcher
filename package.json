@@ -1,0 +1,61 @@
+{
+  "name": "dsh-qr-launcher",
+  "version": "0.1.0",
+  "description": "DSH 插件：Web 启动后自动在终端打印局域网访问二维码（ASCII），并在 DSH 设置页新增「二维码访问」面板。零侵入、零运行时依赖，可与 dsh-lan-access 一起使用。",
+  "license": "MIT",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "vendor",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web"
+    }
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.mjs\""
+  },
+  "devDependencies": {
+    "jsqr": "^1.4.0",
+    "playwright-core": "^1.63.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "deepseek-harness-plugin",
+    "qrcode",
+    "qr",
+    "lan",
+    "局域网",
+    "mobile-access",
+    "ascii-qr",
+    "web-ui"
+  ],
+  "author": "xsstomy",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xsstomy/dsh-qr-launcher.git"
+  }
+}
